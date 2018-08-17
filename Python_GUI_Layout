@@ -2,7 +2,7 @@ PYTHON INTERFACE OPTIONS:
 - txt file location
 - LFQ/intensity
 - Data normalisation choices
-- diagnostic plots
+- diagnostic plots (plot in TKinter window?)
 - t-test type, run
 - Choose control/treatment (need to use python to assess mqpar.xml file for choice)
 - 
