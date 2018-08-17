@@ -1,0 +1,11 @@
+- filter proteingroups file, removing cotam and rev hits
+- extract leading proteins to make proteinn  list
+- filter peptides file, removing cotam and rev hits
+- use protein list to filter peptides file and link each protein with its peptides
+- calculate the ratio between Control and Treatment for each peptide within each protein
+- discard peptides that do not conform to the same FC sign (neg or pos) as the majority for each protein group:
+  if there is < 75% agreement, discard protein
+- calculate new protein quant value for each protein using remaining peptides (sum)
+- use new quant values for DE anaysis using LIMMA/t-test/RankProd
+
+(?) normalise peptides before protein assignment or normalise proteins after
