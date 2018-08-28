@@ -1,5 +1,5 @@
 - filter proteingroups file, removing cotam and rev hits
-- extract leading proteins to make proteinn  list
+- extract leading proteins to make protein list
 - filter peptides file, removing cotam and rev hits
 - use protein list to filter peptides file and link each protein with its peptides
 - calculate the ratio between Control and Treatment for each peptide within each protein
