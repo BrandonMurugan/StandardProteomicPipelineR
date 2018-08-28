@@ -255,7 +255,11 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
+<<<<<<< HEAD
     <frame x="-8" y="-8" width="1296" height="1000" extended-state="7" />
+=======
+    <frame x="-8" y="-8" width="1296" height="1000" extended-state="6" />
+>>>>>>> b828f5c6f389532690dda9030c1b092df10cbe1d
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="12" />
