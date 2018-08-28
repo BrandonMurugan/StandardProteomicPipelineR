@@ -26,24 +26,35 @@ class Application(tk.Frame):
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)
 
+        self.Proteome = tk.IntVar()
+        self.Phospho = tk.IntVar()
+        self.Phos_Prot = tk.IntVar()
         self.LFQ = tk.IntVar()
         self.Intensity = tk.IntVar()
         self.MedianCentre = tk.IntVar()
         self.Quantile = tk.IntVar()
 
-        self.checkFrame = tk.LabelFrame(self, text='1. Select Quantitation Type', padx=10, pady=0, width=50, height=25). \
-            grid(row=0, columnspan=2, padx=0, pady=0, sticky=tk.N + tk.S + tk.E + tk.W)
+        self.checkFrame = tk.LabelFrame(self, text='1. Select Experiment Type', padx=10, pady=0, width=100, height=25). \
+            grid(row=0, columnspan=3, rowspan=2, padx=0, pady=0, sticky=tk.N + tk.S + tk.E + tk.W)
 
-        self.checkFrame = tk.LabelFrame(self, text='2. Select Normalisation Type (usually for Intensity Quant)',
-                                        padx=10, pady=0, width=50, height=25). \
-            grid(row=1, columnspan=2, padx=0, pady=0, sticky=tk.N + tk.S + tk.E + tk.W)
-
-        self.fileFrame = tk.LabelFrame(self, text='3. Select txt file directory and import data files', padx=10, pady=0, width=50,
-                                       height=80). \
+        self.checkFrame = tk.LabelFrame(self, text='2. Select Quantitation Type', padx=10, pady=0, width=100, height=25). \
             grid(row=2, columnspan=2, padx=0, pady=0, sticky=tk.N + tk.S + tk.E + tk.W)
 
-        self.runFrame = tk.LabelFrame(self, text='4. Run Analysis', padx=10, pady=0, width=50, height=10). \
-            grid(row=3, columnspan=3, padx=0, pady=0, sticky=tk.N + tk.S + tk.E + tk.W)
+        self.checkFrame = tk.LabelFrame(self, text='3. Select Normalisation Type (Intensity Data)',
+                                        padx=10, pady=0, width=0, height=25). \
+            grid(row=3, columnspan=2, padx=0, pady=0, sticky=tk.N + tk.S + tk.E + tk.W)
+
+        self.fileFrame = tk.LabelFrame(self, text='4. Select txt file directory and import data files', padx=10, pady=0, width=100,
+                                       height=80). \
+            grid(row=4, columnspan=2, padx=0, pady=0, sticky=tk.N + tk.S + tk.E + tk.W)
+
+        self.runFrame = tk.LabelFrame(self, text='5. Run Analysis', padx=10, pady=0, width=100, height=10). \
+            grid(row=5, columnspan=2, padx=0, pady=0, sticky=tk.N + tk.S + tk.E + tk.W)
+
+        self.Proteome = tk.Checkbutton(self, text='Proteomic', variable=self.Proteome)
+        self.Phospho = tk.Checkbutton(self, text='Phospho', variable=self.Phospho)
+        self.Phos_Prot = tk.Checkbutton(self, text='Proteomic+Phospho', variable=self.Phos_Prot)
+        # self.Intensity.config(state="active")
 
         self.LFQ = tk.Checkbutton(self, text='LFQ', variable=self.LFQ)
         self.Intensity = tk.Checkbutton(self, text='Intensity', variable=self.Intensity)
@@ -60,31 +71,39 @@ class Application(tk.Frame):
         # self.FullReport.select()
         self.DirButton = tk.Button(self, text='Pick txt directory of MQ run',
                                     command=self.directoryOpen)
-        self.note = tk.Label(self, text="Note: Please copy mqpar.xml file into txt folder before selecting folder",
+        self.note = tk.Label(self, text="First copy mqpar.xml file into txt folder",
                              font=("TkDefaultFont ", 8, "italic"), fg="red")
 
-        self.StartButton = tk.Button(self, text='Start Analysis!', bg = "green", fg = "white",
+        self.NormButton = tk.Button(self, text='Normalise Data', bg="blue", fg="white",
                                      command=self.ExecuteNormalise)
+
+        self.StartButton = tk.Button(self, text='Start Analysis!', bg = "green", fg = "white",
+                                     command=self.ExecuteMain)
 
         self.quitButton = tk.Button(self, text='Quit', bg = "red", fg = "white",
                                         command=self.quit)
 
         self.version = tk.Label(self, text = "Brandon Murugan | 2018 | v1.0", font=("TkDefaultFont ", 8))
 
-        self.LFQ.grid(row=0, column=0, padx=20, pady=20)#, sticky=tk.N + tk.S + tk.E + tk.W)
-        self.Intensity.grid(row=0, column=1, padx=20, pady=20)#, sticky=tk.N + tk.S + tk.E + tk.W)
+        self.Proteome.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.S + tk.E + tk.W)
+        self.Phospho.grid(row=0, column=1, padx=20, pady=20, sticky=tk.N + tk.S + tk.E + tk.W)
+        self.Phos_Prot.grid(row=0, column=0, padx=20, pady=20, sticky=tk.N + tk.S + tk.E + tk.W)
 
-        self.MedianCentre.grid(row=1, column=0, padx=20, pady=20)#, sticky=tk.N + tk.S + tk.E + tk.W)
-        self.Quantile.grid(row=1, column=1, padx=20, pady=20)#, sticky=tk.N + tk.S + tk.E + tk.W)
+        self.LFQ.grid(row=2, column=0, padx=20, pady=20, sticky=tk.N + tk.S + tk.E + tk.W)
+        self.Intensity.grid(row=2, column=1, padx=20, pady=20, sticky=tk.N + tk.S + tk.E + tk.W)
 
-        self.DirButton.grid(row=2, column=1,padx=5, pady=20, sticky=tk.N)
-        self.note.grid(row=2, column=1,padx=5, pady=5, sticky=tk.S)
+        self.MedianCentre.grid(row=3, column=0, padx=20, pady=20, sticky=tk.N + tk.S + tk.E + tk.W)
+        self.Quantile.grid(row=3, column=1, padx=20, pady=20, sticky=tk.N + tk.S + tk.E + tk.W)
 
-        self.StartButton.grid(row=3, column=1,padx=5, pady=20, sticky=tk.N + tk.S + tk.E + tk.W)
+        self.DirButton.grid(row=4, column=0, columnspan = 2, padx=20, pady=10, sticky=tk.S)
+        self.note.grid(row=4, column=0, columnspan = 2, padx=20, pady=20, sticky=tk.N)
 
-        self.quitButton.grid(row=4, column=2, columnspan=20, padx=5, pady=20, sticky=tk.N + tk.S + tk.E + tk.W)
+        self.NormButton.grid(row=5, column=0, padx=20, pady=20, sticky=tk.N + tk.S + tk.E + tk.W)
+        self.StartButton.grid(row=5, column=1,padx=20, pady=20, sticky=tk.N + tk.S + tk.E + tk.W)
 
-        self.version.grid(row=4, column=0, columnspan=1, padx=0, pady=0, sticky=tk.S + tk.W)
+        self.quitButton.grid(row=6, column=1, padx=20, pady=20, sticky=tk.N + tk.S + tk.E + tk.W)
+
+        self.version.grid(row=7, column=0,  padx=0, pady=0, sticky=tk.S + tk.W)
         # self.version.pack(anchor=tk.E, pady=(0, 25))
 
     def ExecuteNormalise(self):
@@ -98,6 +117,9 @@ class Application(tk.Frame):
         # self.rscriptcall.wait()
         # shutil.rmtree(self.tempPath)
         # self.bell()
+
+    def ExecuteMain(self):
+        pass
 
     def directoryOpen(self):
         # gets directory at users prompt, and writes directory, as well as report type choices to txt file and stores
@@ -125,5 +147,5 @@ class Application(tk.Frame):
         
 
 app = Application()
-app.master.title('MaxQuant Advanced Summary')
+app.master.title('Standard Data Pipeline R')
 app.mainloop()

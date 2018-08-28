@@ -1,13 +1,17 @@
-dataPreprocess <- function(){
+dataPreprocess <- function(txtpath, QuantType, NormType){
   library(dplyr)
   library(splitstackshape)
-  
+  library(here)
+  # setwd(here())
+  # txtpath <- "C:/Users/Brandon/Documents/example_txt"
+  direct <- txtpath
+  load(paste0(direct,"/images/imported_Data.RData"))
   # variables from Python
-  QuantType <- summarySettings["QuantType",]
-  NormType <- summarySettings["NormType",]
+  # QuantType <- summarySettings["QuantType",]
+  # NormType <- summarySettings["NormType",]
   
   # Remove Contaminants, Reverse hits ####
-  proteinGroups <- read.delim("~/example_txt/proteinGroups.txt", sep = "\t")
+  # proteinGroups <- read.delim("~/example_txt/proteinGroups.txt", sep = "\t")
   PGs <- proteinGroups
   PGs <- PGs[PGs$Potential.contaminant != "+" & PGs$Reverse != "+",]
   
@@ -46,8 +50,9 @@ dataPreprocess <- function(){
   # render these in python GUI (real time)?
   before <- ProteinQuant
   after <- ProteinQuant.norm
-  boxplot(log(before[,-1], 2))
-  boxplot(log(after[,-1], 2))
+  par(mfrow=c(1,2))
+  boxplot(log(before[,-1], 2), main = "Before Norm")
+  boxplot(log(after[,-1], 2), main = paste0("After ", NormType, " Norm"))
   
   if (QuantType == "Quantile"){
     # to be added
@@ -67,7 +72,6 @@ dataPreprocess <- function(){
   
   
   
-  
-  
-  
+  save(list = ls(all.names = TRUE), file = paste0(direct,"/images/normalised_Data.RData"))
+
 }
